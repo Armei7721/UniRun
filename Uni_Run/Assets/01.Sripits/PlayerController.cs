@@ -26,15 +26,51 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(isDead)
+        {
+            // 사망 시 처리를 더 이상 진행하지 않고 종료
+            return;
+        }
+        if(Input.GetMouseButtonDown(0) && jumpCount<2)
+        {
+            //점프 횟수 증가
+            jumpCount++;
+            // 점프 직전에 속도를 순간적으로 제로(0,0)로 변경
+            playerRigidbody.velocity = Vector2.zero;
+            // 리지드바디에 위쪽으로 힘 주기
+            playerRigidbody.AddForce(new Vector2(0, jumpForce));
+            // 오디오 소스 재생
+            playerAudio.Play();
+        }
+        else if(Input.GetMouseButtonUp(0) && playerRigidbody.velocity.y>0)
+        {
+            // 마우스 왼쪽 버튼에서 손을 떼는 순간 && 속도의 y 값이 양수라면(위로 상승 중)
+            // 현재 속도를 절반으로 변경
+            playerRigidbody.velocity = playerRigidbody.velocity * 0.5f;
+        }
+        animator.SetBool("Grounded", isGrounded);
     }
     private void Die()
     {
         //사망 처리
+        animator.SetTrigger("Die");
+        //오이오 소스에 할당된 오디오 클립을 deathClip으로 변경
+        playerAudio.clip = deathClip;
+        //사망 효과음 재생
+        playerAudio.Play();
+
+        //속도를 제로(0,0)로 변경
+        playerRigidbody.velocity = Vector2.zero;
+        // 사망 상태를 true로 변경
+        isDead = true;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
       //트리거 콜라이더를 가진 장애물과의 충돌을 감지
+      if(other.tag =="Dead" && !isDead)
+        {
+            Die();
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
