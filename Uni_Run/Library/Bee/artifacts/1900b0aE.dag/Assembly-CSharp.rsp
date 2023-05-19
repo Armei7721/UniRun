@@ -370,6 +370,7 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/01.Sripits/BackgroundLoop.cs"
+"Assets/01.Sripits/GameManager.cs"
 "Assets/01.Sripits/PlayerController.cs"
 "Assets/01.Sripits/ScrollingObject.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
