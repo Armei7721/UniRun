@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+   
     public AudioClip deathClip; //사망시 재생할 오디오 클립
     public float jumpForce = 700f; //점프 힘
     public int Hp = 3;
@@ -81,7 +82,7 @@ public class PlayerController : MonoBehaviour
       else if (other.tag =="Recovery" && !isDead)
         {
             Recovery();
-            gameObject.
+            Destroy(other.gameObject);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
