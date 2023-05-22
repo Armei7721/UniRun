@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public AudioClip deathClip; //사망시 재생할 오디오 클립
     public float jumpForce = 700f; //점프 힘
-
+    
     private int jumpCount = 0; //누적 점프 횟수
     private bool isGrounded = false; // 바닥에 닿았는지 나타냄
     private bool isDead = false;//사망 상태
-
     private Rigidbody2D playerRigidbody; // 사용할 리지드바디 컴포넌트
     private Animator animator; // 사용할 애니메이터 컴포넌트
     private AudioSource playerAudio; // 사용할 오디오 소스 컴포넌트
@@ -58,13 +55,12 @@ public class PlayerController : MonoBehaviour
         playerAudio.clip = deathClip;
         //사망 효과음 재생
         playerAudio.Play();
-
         //속도를 제로(0,0)로 변경
         playerRigidbody.velocity = Vector2.zero;
         // 사망 상태를 true로 변경
         isDead = true;
-
         //게임 매니저의 게임오버 처리 실행
+        GameManager.instance.OnPlayerDead();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
