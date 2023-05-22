@@ -373,6 +373,7 @@
 "Assets/01.Sripits/GameManager.cs"
 "Assets/01.Sripits/Platform.cs"
 "Assets/01.Sripits/PlayerController.cs"
+"Assets/01.Sripits/Recovery.cs"
 "Assets/01.Sripits/ScrollingObject.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01_UGUI.cs"

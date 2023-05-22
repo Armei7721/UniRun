@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     public AudioClip deathClip; //사망시 재생할 오디오 클립
     public float jumpForce = 700f; //점프 힘
+    public int Hp = 3;
     
     private int jumpCount = 0; //누적 점프 횟수
     private bool isGrounded = false; // 바닥에 닿았는지 나타냄
@@ -47,6 +48,14 @@ public class PlayerController : MonoBehaviour
         }
         animator.SetBool("Grounded", isGrounded);
     }
+    private void Recovery()
+    {
+        if (Hp <= 5)
+        {
+            Hp += 1;
+        }
+
+    }
     private void Die()
     {
         //사망 처리
@@ -68,6 +77,11 @@ public class PlayerController : MonoBehaviour
       if(other.tag =="Dead" && !isDead)
         {
             Die();
+        }
+      else if (other.tag =="Recovery" && !isDead)
+        {
+            Recovery();
+            gameObject.
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
