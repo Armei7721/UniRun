@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-   
+    public GameObject[] Hp; // 켜거나 끌 자식 오브젝트
     public AudioClip deathClip; //사망시 재생할 오디오 클립
     public float jumpForce = 700f; //점프 힘
-    public int Hp = 3;
+    public int hp = 3;
     
+
     private int jumpCount = 0; //누적 점프 횟수
     private bool isGrounded = false; // 바닥에 닿았는지 나타냄
     private bool isDead = false;//사망 상태
@@ -20,17 +21,26 @@ public class PlayerController : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
+        for (int i = 0; i < Hp.Length; i++)
+        {
+            Hp[i].SetActive(true);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isDead)
+        Jump();
+        Slide();
+    }
+    private void Jump()
+    {
+        if (isDead)
         {
             // 사망 시 처리를 더 이상 진행하지 않고 종료
             return;
         }
-        if(Input.GetMouseButtonDown(0) && jumpCount<2)
+        if (Input.GetMouseButtonDown(0) && jumpCount < 2)
         {
             //점프 횟수 증가
             jumpCount++;
@@ -41,7 +51,7 @@ public class PlayerController : MonoBehaviour
             // 오디오 소스 재생
             playerAudio.Play();
         }
-        else if(Input.GetMouseButtonUp(0) && playerRigidbody.velocity.y>0)
+        else if (Input.GetMouseButtonUp(0) && playerRigidbody.velocity.y > 0)
         {
             // 마우스 왼쪽 버튼에서 손을 떼는 순간 && 속도의 y 값이 양수라면(위로 상승 중)
             // 현재 속도를 절반으로 변경
@@ -49,13 +59,55 @@ public class PlayerController : MonoBehaviour
         }
         animator.SetBool("Grounded", isGrounded);
     }
+    private void Slide()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            animator.SetBool("Slide", true);
+        }
+        else if(Input.GetMouseButtonUp(1))
+        {
+            animator.SetBool("Slide", false);
+        }
+    }
     private void Recovery()
     {
-        if (Hp <= 5)
+        if (hp < Hp.Length)
         {
-            Hp += 1;
+            
+            Hp[hp].SetActive(true);
+            hp += 1;
         }
 
+    }
+   
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+      //트리거 콜라이더를 가진 장애물과의 충돌을 감지
+      if(other.tag =="Dead" && !isDead)
+        {
+            Die();   
+        }
+      else if (other.tag =="Recovery" && !isDead)
+        {
+            Recovery();
+            other.gameObject.SetActive(false);
+        }
+      else if (other.tag == "Trap" && !isDead)
+        {
+            if (hp == 1)
+            {
+                hp -= 1;
+                Hp[hp].SetActive(false);
+                Die();
+            }
+            else if (hp > 0)
+            {
+                hp -= 1;
+                Hp[hp].SetActive(false);
+            }
+
+        }
     }
     private void Die()
     {
@@ -72,19 +124,6 @@ public class PlayerController : MonoBehaviour
         //게임 매니저의 게임오버 처리 실행
         GameManager.instance.OnPlayerDead();
     }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-      //트리거 콜라이더를 가진 장애물과의 충돌을 감지
-      if(other.tag =="Dead" && !isDead)
-        {
-            Die();
-        }
-      else if (other.tag =="Recovery" && !isDead)
-        {
-            Recovery();
-            Destroy(other.gameObject);
-        }
-    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // 바닥에 닿았음을 감지하는 처리
@@ -100,4 +139,6 @@ public class PlayerController : MonoBehaviour
         //바닥에서 벗어났음을 감지하는 처리
         isGrounded = false;
     }
+
+
 }

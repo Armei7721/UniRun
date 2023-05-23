@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Dead
   - Recovery
+  - Trap
   layers:
   - Default
   - TransparentFX

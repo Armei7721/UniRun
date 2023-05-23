@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1729175196051437297}
   m_Layer: 0
   m_Name: Obstacle Left
-  m_TagString: Dead
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -261,6 +261,8 @@ GameObject:
   - component: {fileID: 8058332890019042829}
   - component: {fileID: 8058332890019042830}
   - component: {fileID: 8058332890019042831}
+  - component: {fileID: 805958315}
+  - component: {fileID: 805958320}
   m_Layer: 0
   m_Name: Platform
   m_TagString: Untagged
@@ -364,6 +366,35 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &805958315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058332890019042816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 678b0fcebc5fede47a0d193388710dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+--- !u!114 &805958320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058332890019042816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f975ef653abb48238f62061ebab1c23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacles:
+  - {fileID: 267745755905409823}
+  - {fileID: 8058332890428517375}
+  - {fileID: 1265014756223889532}
 --- !u!1 &8058332890428517375
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,7 +408,7 @@ GameObject:
   - component: {fileID: 8058332890428517371}
   m_Layer: 0
   m_Name: Obstacle Mid
-  m_TagString: Dead
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

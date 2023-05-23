@@ -1,30 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class Platform : MonoBehaviour
-{
-    public GameObject[] bostacles; //Àå¾Ö¹° ¿ÀºêÁ§Æ®µé
-    private bool stepped = false; //ÇÃ·¹ÀÌ¾î Ä³¸¯ÅÍ°¡ ¹â¾Ò´Â°¡?
-    // Start is called before the first frame update
-    void Start()
-    {
+// ë°œíŒìœ¼ë¡œì„œ í•„ìš”í•œ ë™ì‘ì„ ë‹´ì€ ìŠ¤í¬ë¦½íŠ¸
+public class Platform : MonoBehaviour {
+    public GameObject[] obstacles; // ì¥ì• ë¬¼ ì˜¤ë¸Œì íŠ¸ë“¤
+    private bool stepped = false; // í”Œë ˆì´ì–´ ìºë¦­í„°ê°€ ë°Ÿì•˜ì—ˆëŠ”ê°€
+
+    // ì»´í¬ë„ŒíŠ¸ê°€ í™œì„±í™”ë ë•Œ ë§ˆë‹¤ ë§¤ë²ˆ ì‹¤í–‰ë˜ëŠ” ë©”ì„œë“œ
+    private void OnEnable() {
+        //ë°Ÿí˜ ìƒíƒœë¥¼ ë¦¬ì…‹
+        stepped = false;
+        // ì¥ì• ë¬¼ì˜ ìˆ˜ë§Œí¼ ë£¨í”„
+        for (int i = 0; i < obstacles.Length; i++)
+        {
+            //í˜„ì¬ ìˆœë²ˆì˜ ì¥ì• ë¬¼ì„ 1/3ì˜ í™•ë¥ ë¡œ í™œì„±
+            if (Random.Range(0, 3) == 0)
+            {
+                obstacles[i].SetActive(true);
+            }
+            else
+            {
+                obstacles[i].SetActive(false);
+            }
+        }
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void OnCollisionEnter2D(Collision2D collision) {
+        // í”Œë ˆì´ì–´ ìºë¦­í„°ê°€ ìì‹ ì„ ë°Ÿì•˜ì„ë•Œ ì ìˆ˜ë¥¼ ì¶”ê°€í•˜ëŠ” ì²˜ë¦¬
+        if(collision.collider.tag == "Player" && !stepped)
+        {
+            stepped = true;
+            GameManager.instance.AddScore(10);
+        }
     }
-    //ÄÄÆ÷³ÍÆ®°¡ È°¼ºÈ­µÉ ¶§¸¶´Ù ¸Å¹ø ½ÇÇàµÇ´Â ¸Ş¼­µå
-    private void OnEnabel()
-    {
-        //¹ßÆÇÀ» ¸®¼ÂÇÏ´Â Ã³¸®
-    }
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        //ÇÃ·¹ÀÌ¾î Ä³¸¯ÅÍ°¡ ÀÚ½ÅÀ» ¹â¾ÒÀ» ¶§ Á¡¼ö¸¦ Ãß°¡ÇÏ´Â Ã³¸®
-    }
-        
 }
