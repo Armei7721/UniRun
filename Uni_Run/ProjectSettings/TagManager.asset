@@ -7,6 +7,8 @@ TagManager:
   - Dead
   - Recovery
   - Trap
+  - Score
+  - Booster
   layers:
   - Default
   - TransparentFX
