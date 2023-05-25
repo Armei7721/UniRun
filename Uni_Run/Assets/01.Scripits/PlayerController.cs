@@ -10,17 +10,24 @@ public class PlayerController : MonoBehaviour
     public float normalSpeed = 5f; // 원래 속도
     public float boostedSpeed = 10f; // 아이템을 먹었을 때의 증가된 속도
 
-    private bool isBoosted; // 아이템을 먹었는지 여부 확인
+    private bool isBoosted; // 부스터 아이템을 먹었는지 여부 확인
     private float boostDuration = 2f; // 속도 증가 지속 시간
     private float boostTimer; // 속도 증가 타이머
 
+    private bool isIY; // 무적 아이템을 먹었는지 여부 확인
+    private float MZDuration = 5f; //무적 지속 시간
+    private float MZTimer;// 무적 타이머
 
     private int jumpCount = 0; //누적 점프 횟수
     private bool isGrounded = false; // 바닥에 닿았는지 나타냄
     private bool isDead = false;//사망 상태
+
     private Rigidbody2D playerRigidbody; // 사용할 리지드바디 컴포넌트
     private Animator animator; // 사용할 애니메이터 컴포넌트
     private AudioSource playerAudio; // 사용할 오디오 소스 컴포넌트
+
+    public float t;
+    public float duration =1;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,10 +47,11 @@ public class PlayerController : MonoBehaviour
         Jump();
         Slide();
         Booster();
+        Invincibility();
     }
     private void Booster()
     {
-        if (isBoosted)
+        if (isBoosted == true)
         {
             boostTimer -= Time.deltaTime;
             if (boostTimer <= 0f)
@@ -53,6 +61,25 @@ public class PlayerController : MonoBehaviour
 
                 // 여기에 속도 원래 값으로 돌아갔을 때의 처리 등을 추가할 수 있습니다.
             }
+        }
+    }
+    private void Invincibility()
+    {
+        if (isIY == true)
+        {
+            MZTimer -= Time.deltaTime;
+            if (MZTimer <= 0f)
+            {
+                while (t < 1f)
+                {
+                    t += Time.deltaTime / duration;
+                    transform.localScale = new Vector3(Mathf.Lerp(3f,1f,t), Mathf.Lerp(3f,1f,t), 1f);
+                    isIY = false;
+                    Debug.Log(transform.localScale);
+                }
+                t = 0;
+            }
+            Debug.Log(MZTimer);
         }
     }
     private void Jump()
@@ -87,7 +114,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("Slide", true);
         }
-        else if(Input.GetMouseButtonUp(1))
+        else if (Input.GetMouseButtonUp(1))
         {
             animator.SetBool("Slide", false);
         }
@@ -96,11 +123,10 @@ public class PlayerController : MonoBehaviour
     {
         if (hp < Hp.Length)
         {
-            
+
             Hp[hp].SetActive(true);
             hp += 1;
         }
-
     }
     private void Die()
     {
@@ -117,53 +143,69 @@ public class PlayerController : MonoBehaviour
         //게임 매니저의 게임오버 처리 실행
         GameManager.instance.OnPlayerDead();
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-      //트리거 콜라이더를 가진 장애물과의 충돌을 감지
-      if(other.tag =="Dead" && !isDead)
+        //트리거 콜라이더를 가진 장애물과의 충돌을 감지
+        if (other.tag == "Dead" && !isDead)
         {
-            Die();   
+            Die();
         }
-      else if (other.tag =="Recovery" && !isDead)
+        else if (other.tag == "Recovery" && !isDead)
         {
             Recovery();
             other.gameObject.SetActive(false);
         }
-      else if (other.tag == "Trap" && !isDead)
+        else if (other.tag == "Trap" && !isDead)
         {
-            if (hp > 0)
+            if (hp > 0 && isIY == false)
             {
                 hp -= 1;
                 Hp[hp].SetActive(false);
-                if(hp==0)
+                if (hp == 0)
                 {
                     Die();
                 }
             }
+            else if (isIY == true)
+            {
+                other.gameObject.SetActive(false);
+            }
 
         }
-      else if (other.tag == "Score" && !isDead)
+        else if (other.tag == "Score" && !isDead)
         {
             GameManager.instance.AddScore(100);
             other.gameObject.SetActive(false);
         }
-      else if (other.tag == "Booster" && !isDead)
+        else if (other.tag == "Booster" && !isDead)
         {
             if (!isBoosted) // 아이템을 이미 먹은 상태라면 중복 처리 방지
             {
                 isBoosted = true;
                 boostTimer = boostDuration;
-                ScrollingObject.speed = ScrollingObject.speed * 2;
+                ScrollingObject.speed *= 2;
                 // 여기에 속도 증가에 따른 시각적 효과 등을 추가할 수 있습니다.
             }
-            
+
             //other.gameObject.SetActive(false);
+        }
+        else if (other.tag == "IY" && !isDead)
+        {
+            if (!isIY)
+            {
+                
+                MZTimer = MZDuration;
+                Invincibility();
+                transform.localScale = new Vector3(Mathf.Lerp(1f, 3f, 1f), Mathf.Lerp(1f, 3f, 1f), 1f);
+                isIY = true;
+            }
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // 바닥에 닿았음을 감지하는 처리
-        if(collision.contacts[0].normal.y>0.7f)
+        if (collision.contacts[0].normal.y > 0.7f)
         {
             //isGround를 true로 변경하고, 누적 점프 횟수를 0으로 리셋
             isGrounded = true;

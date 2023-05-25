@@ -9,6 +9,7 @@ TagManager:
   - Trap
   - Score
   - Booster
+  - IY
   layers:
   - Default
   - TransparentFX

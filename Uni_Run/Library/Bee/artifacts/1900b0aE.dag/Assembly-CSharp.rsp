@@ -375,6 +375,7 @@
 "Assets/01.Scripits/PlatformSpawner.cs"
 "Assets/01.Scripits/PlayerController.cs"
 "Assets/01.Scripits/ScrollingObject.cs"
+"Assets/01.Scripits/Test.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01_UGUI.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark02.cs"
