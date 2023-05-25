@@ -13,21 +13,24 @@ public class Test : MonoBehaviour
     private void Update()
     {
         Invincibility();
-        if (isScalingUp)
+        if (isScalingUp == true)
         {
             scaleTimer += Time.deltaTime;
             float t = scaleTimer / scaleDuration;
             transform.localScale = Vector3.Lerp(initialScale, new Vector3(3f, 3f, 1f), t);
 
-            if (scaleTimer >= scaleDuration)
-            {
-                isScalingUp = false;
-                isScalingDown = true;
-                scaleTimer = 0f;
-                initialScale = transform.localScale;
-            }
+            //Debug.Log(scaleTimer);
+            ////Debug.Log(scaleDuration);
+            //if (scaleTimer >= scaleDuration)
+            //{
+            //    isScalingUp = false;
+            //    isScalingDown = true;
+            //    scaleTimer = 0f;
+            //    initialScale = transform.localScale;
+             
+            //}
         }
-        else if (isScalingDown)
+        else if (isScalingDown == true)
         {
             scaleTimer += Time.deltaTime;
             float t = scaleTimer / scaleDuration;
@@ -36,6 +39,8 @@ public class Test : MonoBehaviour
             if (scaleTimer >= scaleDuration)
             {
                 isScalingDown = false;
+                isScalingUp = true;
+                initialScale = transform.localScale;
             }
         }
     }

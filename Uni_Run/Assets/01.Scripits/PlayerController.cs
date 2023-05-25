@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource playerAudio; // 사용할 오디오 소스 컴포넌트
 
     public float t;
-    public float duration =1;
+    public float duration =10;
     // Start is called before the first frame update
     void Start()
     {
@@ -70,16 +70,29 @@ public class PlayerController : MonoBehaviour
             MZTimer -= Time.deltaTime;
             if (MZTimer <= 0f)
             {
-                while (t < 1f)
+                if (t < 5f)
                 {
                     t += Time.deltaTime / duration;
-                    transform.localScale = new Vector3(Mathf.Lerp(3f,1f,t), Mathf.Lerp(3f,1f,t), 1f);
-                    isIY = false;
-                    Debug.Log(transform.localScale);
+                    if (t < 2.5f)
+                    {
+                        transform.localScale = Vector3.Lerp(new Vector3(1f, 1f, 1f), new Vector3(3f, 3f, 1f), t * 0.4f);
+                    }
+                    else
+                    {
+                        transform.localScale = Vector3.Lerp(new Vector3(3f, 3f, 1f), new Vector3(1f, 1f, 1f), (t - 2.5f) * 0.4f);
+                        if (t >= 4.5f)
+                        {
+                            isIY = false;
+                            transform.localScale = new Vector3(1f, 1f, 1f);
+                        }
+                    }
                 }
-                t = 0;
+                else
+                {
+                    t = 0f;
+                    MZTimer = MZDuration;
+                }
             }
-            Debug.Log(MZTimer);
         }
     }
     private void Jump()
@@ -193,12 +206,10 @@ public class PlayerController : MonoBehaviour
         else if (other.tag == "IY" && !isDead)
         {
             if (!isIY)
-            {
-                
-                MZTimer = MZDuration;
-                Invincibility();
-                transform.localScale = new Vector3(Mathf.Lerp(1f, 3f, 1f), Mathf.Lerp(1f, 3f, 1f), 1f);
+            {   
                 isIY = true;
+                Invincibility();
+                other.gameObject.SetActive(false);
             }
         }
     }
