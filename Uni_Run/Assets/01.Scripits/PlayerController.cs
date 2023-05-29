@@ -72,29 +72,25 @@ public class PlayerController : MonoBehaviour
             //MZTimer가 0보다 작으면
             if (MZTimer <= 0f)
             {   
-                if (t < 5f)
+                if (t < 10f)
                 {   //t가 Time.deltaTime/duration 만큼 커진다.
                     t += Time.deltaTime / duration;
                     //t가 2.5f보다 작으면 true;
-                    if (t < 2.5f)
+                    if (t < 1.5f)
                     {   // 트랜스폼 로컬 스케일의 크기를 Lerp함수를 사용해서 점진적으로 크키가 1의 크기에서 3의 크기까지 보간 비율(t*0.4f)로 커진다.
-                        transform.localScale = Vector3.Lerp(new Vector3(1f, 1f, 1f), new Vector3(3f, 3f, 1f), t * 0.4f);
+                        transform.localScale = Vector3.Lerp(new Vector3(1f, 1f, 1f), new Vector3(3f, 3f, 1f), t * 0.5f);
                     }
-                    else
-                    {   // 트랜스폼 로컬 스케일의 크기를 Lerp함수를 사용해서 3의 크기에서 1의 크기까지 보간 비율(t-2.5f)*0.4f로 점점 작아진다.
-                        transform.localScale = Vector3.Lerp(new Vector3(3f, 3f, 1f), new Vector3(1f, 1f, 1f), (t - 2.5f) * 0.4f);
-                        //t가 4.5f보다 크면 true;
-                        if (t >= 4.5f)
-                        {
-                            //t가 4.5f보다 커지면 최종 플레이어의 크기는 (1f,1f,1f)가 된다.
-                            transform.localScale = new Vector3(1f, 1f, 1f);
+                    else if (t >= 9.5f)
+                    {
+                        //t가 4.5f보다 커지면 최종 플레이어의 크기는 (1f,1f,1f)가 된다.
+                        transform.localScale = new Vector3(1f, 1f, 1f);
 
-                            //Invincibility 함수를 발동하기 위해 다시 초기화
-                            isIY = false;
-                            MZTimer = 0;
-                            t = 0f;
-                        }
+                        //Invincibility 함수를 발동하기 위해 다시 초기화
+                        isIY = false;
+                        MZTimer = 0;
+                        t = 0f;
                     }
+                
                 }
             }
             else

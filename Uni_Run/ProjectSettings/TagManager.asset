@@ -10,6 +10,7 @@ TagManager:
   - Score
   - Booster
   - IY
+  - Axe
   layers:
   - Default
   - TransparentFX
